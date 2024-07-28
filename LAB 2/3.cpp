@@ -48,7 +48,7 @@ Complex operator/( Complex& c1,  Complex& c2) {
 
 ostream& operator<<(ostream& os,  Complex& c) {
     if (c.img<0){
-        os << c.real << " - " << -c.img << "i";
+        os << c.real << " - " << c.img << "i";
     }
     else{
         os << c.real << " + " << c.img << "i";

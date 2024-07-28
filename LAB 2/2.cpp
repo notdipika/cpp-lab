@@ -8,15 +8,15 @@ private:
 public:
     dol(float amt = 0.0) : A(amt) {}
 
-    float input() const {
+    float input() {
         return A;
     }
-    friend bool operator==(const dol& us, const class rup& nr);
-    friend bool operator!=(const dol& us, const rup& nr);
-    friend bool operator<(const dol& us, const rup& nr);
-    friend bool operator<=(const dol& us, const rup& nr);
-    friend bool operator>(const dol& us, const rup& nr);
-    friend bool operator>=(const dol& us, const rup& nr);
+    friend bool operator==( dol& us, class rup& nr);
+    friend bool operator!=( dol& us, rup& nr);
+    friend bool operator<( dol& us, rup& nr);
+    friend bool operator<=( dol& us, rup& nr);
+    friend bool operator>( dol& us, rup& nr);
+    friend bool operator>=( dol& us, rup& nr);
 };
 
 class rup {
@@ -25,36 +25,43 @@ private:
 public:
     rup(float amt = 0.0) : A(amt) {}
 
-    float input() const {
+    float input()  {
         return A;
     }
 
-    dol todol() const {
+    dol todol()  {
         return dol(A / 101.36);
     }
+
+    friend bool operator==( dol& us, rup& nr);
+    friend bool operator!=( dol& us, rup& nr);
+    friend bool operator<( dol& us, rup& nr);
+    friend bool operator<=( dol& us, rup& nr);
+    friend bool operator>( dol& us, rup& nr);
+    friend bool operator>=( dol& us, rup& nr);
 };
 
-bool operator==(const dol& us, const rup& nr) {
+bool operator==( dol& us,  rup& nr) {
     return us.input() == nr.todol().input();
 }
 
-bool operator!=(const dol& us, const rup& nr) {
+bool operator!=( dol& us,  rup& nr) {
     return us.input() != nr.todol().input();
 }
 
-bool operator<(const dol& us, const rup& nr) {
+bool operator<( dol& us,  rup& nr) {
     return us.input() < nr.todol().input();
 }
 
-bool operator<=(const dol& us, const rup& nr) {
+bool operator<=( dol& us,  rup& nr) {
     return us.input() <= nr.todol().input();
 }
 
-bool operator>(const dol& us, const rup& nr) {
+bool operator>( dol& us,  rup& nr) {
     return us.input() > nr.todol().input();
 }
 
-bool operator>=(const dol& us, const rup& nr) {
+bool operator>=( dol& us,  rup& nr) {
     return us.input() >= nr.todol().input();
 }
 
