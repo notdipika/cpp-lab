@@ -1,100 +1,92 @@
-#include<iostream>
+#include <iostream>
 
 using namespace std;
+const int NUM_SUBJECTS = 7;
 
-class Student{
-    int rn;
+class Student {
+protected:
+    int rollNumber;
     char name[20];
 
-    public:
-        void getData(){
-            cout << "Enter student roll no.: ";
-            cin >> rn;
-            cout << "Enter student name: ";
-            cin >> name;
-        }
+public:
+    void getData() {
+        cout << "Enter student roll no.: ";
+        cin >> rollNumber;
+        cout << "Enter student name: ";
+        cin >> name;
+    }
 
-        void showData(){
-            cout << "Roll No.: " << rn << endl;
-            cout << "Name: " << name << endl;
-        }
+    void showData() {
+        cout << "Roll No.: " << rollNumber << endl;
+        cout << "Name: " << name << endl;
+    }
 };
 
-class InternalExam : virtual public Student{
-    protected:
-        int m[7];
+class Exam : virtual public Student {
+protected:
+    int marks[NUM_SUBJECTS];
 
-    public:
-        void getExamData(){
-            cout << "Enter the marks student got in 7 subjects in internal exam: ";
-            for(int i=0; i<7; i++){
-                cin >> m[i];
-            }
+public:
+    void getExamData(const string& examType) {
+        cout << "Enter the marks student got in " << NUM_SUBJECTS << " subjects in " << examType << " exam: ";
+        for (int i = 0; i < NUM_SUBJECTS; i++) {
+            cin >> marks[i];
         }
+    }
 
-        void showData(){
-            for(int i=0; i<7; i++){
-                cout << m[i] << "\t";
-            }
-            cout << endl;
+    void showData() {
+        for (int i = 0; i < NUM_SUBJECTS; i++) {
+            cout << marks[i] << "\t";
         }
+        cout << endl;
+    }
 };
 
-class FinalExam : virtual public Student{
-    protected:
-        int m[7];
-    
-    public:
-        void getExamData(){
-            cout << "Etner the marks student got in 7 subjects in final exam: ";
-            for(int i=0; i<7; i++){
-                cin >> m[i];
-            }
-        }
-
-        void showData(){
-            for(int i=0; i<7; i++){
-                cout << m[i] << "\t";
-            }
-            cout << endl;
-        }
+class InternalExam : public Exam {
+public:
+    void getExamData() {
+        Exam::getExamData("internal");
+    }
 };
 
-class avgMark : public InternalExam, public FinalExam{
-    float marks;
-
-    public:
-        
-        void calculate(){
-            int total;
-            float avg;
-
-            for(int i=0; i<7; i++){
-                total += (InternalExam::m[i] + FinalExam::m[i]);
-            }
-
-            avg = static_cast<int>(total)/14;
-            marks = avg;
-        }
-
-        void showData(){
-            Student::showData();
-            cout << "Internal exam marks: " << endl;
-            InternalExam::showData();
-            cout << "Final exam marks: " << endl;
-            FinalExam::showData();
-            cout << "Average Marks: " << marks;
-        }
+class FinalExam : public Exam {
+public:
+    void getExamData() {
+        Exam::getExamData("final");
+    }
 };
 
-int main(){
-    avgMark A;
+class AverageMark : public InternalExam, public FinalExam {
+private:
+    float averageMarks;
 
-    A.getData();
-    A.InternalExam::getExamData();
-    A.FinalExam::getExamData();
-    A.calculate();
-    A.showData();
+public:
+    void calculate() {
+        int total = 0;
+        for (int i = 0; i < NUM_SUBJECTS; i++) {
+            total += (InternalExam::marks[i] + FinalExam::marks[i]);
+        }
+        averageMarks = static_cast<float>(total) / (2 * NUM_SUBJECTS);
+    }
+
+    void showData() {
+        Student::showData();
+        cout << "Internal exam marks: " << endl;
+        InternalExam::showData();
+        cout << "Final exam marks: " << endl;
+        FinalExam::showData();
+        cout << "Average Marks: " << averageMarks;
+    }
+};
+
+int main() {
+    AverageMark averageMark;
+
+    averageMark.getData();
+    averageMark.InternalExam::getExamData();
+    averageMark.FinalExam::getExamData();
+    averageMark.calculate();
+    averageMark.showData();
 
     return 0;
 }
