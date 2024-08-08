@@ -29,7 +29,7 @@ class Dollars{
             float totalRupees = static_cast<float>(r.getPaisa())/100 + r.getRupees();
             float totalDollars = totalRupees / 98.51;
             dollar = static_cast<int>(totalDollars);
-            cent = (totalDollars-dollar) * 100;
+            cent = static_cast<int>((totalDollars-dollar) * 100);
         }
 
         void show(){

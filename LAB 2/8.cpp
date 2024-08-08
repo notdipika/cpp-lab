@@ -128,10 +128,6 @@ void leave(garage p[]){
             p[i].leave();
         }
     }
-
-    if(flag){
-        cout << "Sorry vehicle not found" << endl;
-    }
 }
 
 int main(){
