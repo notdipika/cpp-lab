@@ -58,7 +58,7 @@ private:
     }
 
     void writeBook(ofstream& file,  Book& book) {
-        file << book.ISBN << ";" << book.bookTitle << ";" << book.author << ";" << book.numberOfCopies << endl;
+        file << book.ISBN << endl << book.bookTitle << endl << book.author << endl << book.numberOfCopies << endl;
     }
 
 public:
