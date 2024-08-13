@@ -7,73 +7,55 @@ using namespace std;
 
 class TwentyFour;
 
-class Twelve
-{
+class Twelve {
     int hr, min, sec;
     string meridiam;
 
 public:
-    Twelve() {}
-    Twelve(int h, int m, int s, string me) : hr(h), min(m), sec(s), meridiam(me) {}
+    Twelve(int h, int m, int s, const string& me) : hr(h), min(m), sec(s), meridiam(me) {}
 
     operator TwentyFour();
 
-    void show()
-    {
-        cout << hr << ":" << min << ":" << sec << " " << meridiam << endl;
+    void show() const {
+        cout << (hr < 10 ? "0" : "") << hr << ":"
+             << (min < 10 ? "0" : "") << min << ":"
+             << (sec < 10 ? "0" : "") << sec << " "
+             << meridiam << endl;
+    }
+
+    bool isValid() const {
+        return hr >= 1 && hr <= 12 && min >= 0 && min <= 59 && sec >= 0 && sec <= 59 &&
+               (meridiam == "AM" || meridiam == "PM");
     }
 };
 
-class TwentyFour
-{
+class TwentyFour {
     int hr, min, sec;
 
 public:
-    TwentyFour() {}
+    TwentyFour() : hr(0), min(0), sec(0) {}
     TwentyFour(int h, int m, int s) : hr(h), min(m), sec(s) {}
 
-    int getH()
-    {
-        return hr;
-    }
-
-    int getM()
-    {
-        return min;
-    }
-
-    int getS()
-    {
-        return sec;
-    }
-
-    void show()
-    {
-        cout << hr << ":" << min << ":" << sec << endl;
+    void show() const {
+        cout << (hr < 10 ? "0" : "") << hr << ":"
+             << (min < 10 ? "0" : "") << min << ":"
+             << (sec < 10 ? "0" : "") << sec << endl;
     }
 };
 
-Twelve::operator TwentyFour()
-{
-    if (meridiam == "AM")
-    {
-        return TwentyFour(hr, min, sec);
+Twelve::operator TwentyFour() {
+    int hourIn24 = hr;
+
+    if (meridiam == "AM") {
+        if (hr == 12) hourIn24 = 0; 
+    } else if (meridiam == "PM") {
+        if (hr != 12) hourIn24 = hr + 12; 
     }
-    else
-    {
-        if (hr == 12)
-        {
-            return TwentyFour(hr, min, sec);
-        }
-        else
-        {
-            return TwentyFour(hr + 12, min, sec);
-        }
-    }
+
+    return TwentyFour(hourIn24, min, sec);
 }
 
-int main()
-{
+int main() {
     int h, m, s;
     string me;
 
@@ -87,6 +69,12 @@ int main()
     cin >> me;
 
     Twelve t12(h, m, s, me);
+
+    if (!t12.isValid()) {
+        cout << "Invalid time entered. Please enter a valid time." << endl;
+        return 1;
+    }
+
     TwentyFour t24 = t12;
 
     cout << "12-hour format: ";
